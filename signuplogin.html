@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GroceryKart – Demo Popup</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeScale {
+            from {
+                opacity: 0;
+                transform: scale(0.90);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-popup {
+            animation: fadeScale 0.25s ease-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- SIMPLE DEMO NAVBAR -->
+    <nav class="w-full bg-white shadow px-8 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-green-600">GroceryKart</h1>
+        <div class="space-x-4">
+            <button id="openLoginBtn"
+                class="px-5 py-2 rounded-lg border border-green-600 text-green-700 hover:bg-green-50">
+                Login
+            </button>
+            <button id="openSignupBtn" class="px-5 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700">
+                Sign Up
+            </button>
+        </div>
+    </nav>
+
+    <!-- SIMPLE DEMO HOME SECTION -->
+    <section class="h-[85vh] flex flex-col justify-center items-center text-center px-6">
+        <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to GroceryKart</h2>
+        <p class="text-gray-600 max-w-xl mb-6">Your fresh and organic grocery shopping destination.
+            Click Login or Sign Up to preview the premium popup.</p>
+        <button id="openSignupBtn2" class="px-6 py-3 bg-green-600 text-white rounded-xl shadow hover:bg-green-700">
+            Get Started
+        </button>
+    </section>
+
+    <!-- AUTH MODAL -->
+    <div id="authModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+        <div
+            class="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl shadow-2xl w-96 p-8 relative animate-popup">
+
+            <!-- Close Button -->
+            <button id="closeModal" class="absolute top-3 right-3 text-gray-600 hover:text-black text-2xl">
+                &times;
+            </button>
+
+            <!-- Tabs -->
+            <div class="flex justify-center mb-6">
+                <button id="showSignup"
+                    class="auth-tab px-4 py-2 font-semibold text-green-600 border-b-2 border-green-600">
+                    Sign Up
+                </button>
+                <button id="showLogin"
+                    class="auth-tab px-4 py-2 font-semibold text-gray-500 border-b-2 border-transparent ml-6">
+                    Login
+                </button>
+            </div>
+
+            <!-- SIGNUP FORM -->
+            <div id="signupForm">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Create Account</h2>
+
+                <div class="relative mb-3">
+                    <input type="text" placeholder="Full Name"
+                        class="w-full p-3 pl-10 border rounded-lg focus:ring focus:ring-green-300">
+                    <span class="absolute left-3 top-3 text-gray-500">👤</span>
+                </div>
+
+                <div class="relative mb-3">
+                    <input type="email" placeholder="Email Address"
+                        class="w-full p-3 pl-10 border rounded-lg focus:ring focus:ring-green-300">
+                    <span class="absolute left-3 top-3 text-gray-500">📧</span>
+                </div>
+
+                <div class="relative mb-4">
+                    <input type="password" placeholder="Password"
+                        class="w-full p-3 pl-10 border rounded-lg focus:ring focus:ring-green-300">
+                    <span class="absolute left-3 top-3 text-gray-500">🔒</span>
+                </div>
+
+                <button class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 font-semibold">
+                    Sign Up
+                </button>
+
+                <p class="text-sm text-center mt-4 text-gray-700">
+                    Already have an account?
+                    <button id="switchToLogin" class="text-green-600 font-semibold">Login</button>
+                </p>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="loginForm" class="hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome Back</h2>
+
+                <div class="relative mb-3">
+                    <input type="email" placeholder="Email Address"
+                        class="w-full p-3 pl-10 border rounded-lg focus:ring focus:ring-green-300">
+                    <span class="absolute left-3 top-3 text-gray-500">📧</span>
+                </div>
+
+                <div class="relative mb-4">
+                    <input type="password" placeholder="Password"
+                        class="w-full p-3 pl-10 border rounded-lg focus:ring focus:ring-green-300">
+                    <span class="absolute left-3 top-3 text-gray-500">🔒</span>
+                </div>
+
+                <button class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 font-semibold">
+                    Login
+                </button>
+
+                <p class="text-sm text-center mt-4 text-gray-700">
+                    Don’t have an account?
+                    <button id="switchToSignup" class="text-green-600 font-semibold">Sign Up</button>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JS (Minimal) -->
+    <script>
+        const authModal = document.getElementById("authModal");
+        const closeModal = document.getElementById("closeModal");
+
+        const showSignup = document.getElementById("showSignup");
+        const showLogin = document.getElementById("showLogin");
+
+        const signupForm = document.getElementById("signupForm");
+        const loginForm = document.getElementById("loginForm");
+
+        const switchToLogin = document.getElementById("switchToLogin");
+        const switchToSignup = document.getElementById("switchToSignup");
+
+        const openSignupBtn = document.getElementById("openSignupBtn");
+        const openSignupBtn2 = document.getElementById("openSignupBtn2");
+        const openLoginBtn = document.getElementById("openLoginBtn");
+
+        function openModal(showLoginFirst = false) {
+            if (showLoginFirst) {
+                signupForm.classList.add("hidden");
+                loginForm.classList.remove("hidden");
+
+                showLogin.classList.add("text-green-600", "border-green-600");
+                showLogin.classList.remove("text-gray-500");
+
+                showSignup.classList.remove("text-green-600", "border-green-600");
+                showSignup.classList.add("text-gray-500");
+            } else {
+                loginForm.classList.add("hidden");
+                signupForm.classList.remove("hidden");
+
+                showSignup.classList.add("text-green-600", "border-green-600");
+                showSignup.classList.remove("text-gray-500");
+
+                showLogin.classList.remove("text-green-600", "border-green-600");
+                showLogin.classList.add("text-gray-500");
+            }
+
+            authModal.classList.remove("hidden");
+        }
+
+        openSignupBtn.addEventListener("click", () => openModal(false));
+        openSignupBtn2.addEventListener("click", () => openModal(false));
+        openLoginBtn.addEventListener("click", () => openModal(true));
+
+        closeModal.addEventListener("click", () => {
+            authModal.classList.add("hidden");
+        });
+
+        switchToLogin.addEventListener("click", () => openModal(true));
+        switchToSignup.addEventListener("click", () => openModal(false));
+
+        showSignup.addEventListener("click", () => openModal(false));
+        showLogin.addEventListener("click", () => openModal(true));
+    </script>
+
+</body>
+
+</html>
